@@ -76,6 +76,8 @@ Carrega o **Manual do Colaborador** e as **Políticas de RH** da ChocolaTech (ho
 
 Tabela criada para armazenar os dados estruturados dos colaboradores:
 
+Query SQL
+
 ```sql
 CREATE TABLE funcionarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -88,20 +90,38 @@ CREATE TABLE funcionarios (
     banco_horas DECIMAL(5,1) NOT NULL DEFAULT 0,
     regime VARCHAR(20) NOT NULL DEFAULT 'hibrido'
 );
+
 ```
 
 A tabela foi populada com dados fictícios de colaboradores de diferentes departamentos (Engenharia, RH, Financeiro, Marketing, Vendas, Operações, TI, Design, Atendimento, Produto), cada um com seu próprio saldo de férias e banco de horas.
 
----
+
+Query SQL
+
+```sql
+INSERT INTO funcionarios (nome, email, departamento, cargo, data_admissao, saldo_ferias, banco_horas, regime) VALUES
+('João Silva', 'joao.silva@empresa.com', 'Engenharia', 'Engenheiro de Software', '2022-03-10', 20, 0.0, 'hibrido'),
+('Maria Souza', 'maria.souza@empresa.com', 'Recursos Humanos', 'Analista de RH', '2021-05-15', 5, 12.5, 'hibrido'),
+('Carlos Oliveira', 'carlos.oliveira@empresa.com', 'Financeiro', 'Analista Financeiro', '2023-01-20', 0, 0.0, 'presencial'),
+('Ana Lima', 'ana.lima@empresa.com', 'Marketing', 'Especialista em Marketing', '2020-11-05', 15, -4.0, 'remoto'),
+('Pedro Santos', 'pedro.santos@empresa.com', 'Vendas', 'Executivo de Vendas', '2022-08-01', 10, 8.0, 'hibrido'),
+('Fernanda Costa', 'fernanda.costa@empresa.com', 'Operações', 'Gerente de Operações', '2019-02-12', 30, 0.0, 'presencial'),
+('Rafael Mendes', 'rafael.mendes@empresa.com', 'TI', 'Analista de Suporte', '2023-06-10', 0, 15.5, 'hibrido'),
+('Juliana Rocha', 'juliana.rocha@empresa.com', 'Engenharia', 'Desenvolvedora Front-end', '2021-09-25', 12, 0.0, 'remoto'),
+('Bruno Alves', 'bruno.alves@empresa.com', 'Design', 'Designer UX/UI', '2022-04-18', 8, 3.5, 'hibrido'),
+('Camila Ferreira', 'camila.ferreira@empresa.com', 'Atendimento', 'Analista de Atendimento', '2024-01-05', 0, 0.0, 'hibrido'),
+('Eric Monné', 'eric.monne@chocolatech.com', 'Produto', 'Instrutor de Cursos', '2024-01-15', 25, 8.0, 'hibrido');
+
+```
 
 ## 5. System Prompt do agente
 
 O comportamento do HR Buddy é controlado por um *system prompt* com regras claras de identificação e uso de fontes de dados:
 
-```
+````
 Você é o HR Buddy, assistente virtual de RH da ChocolaTech.
 
-REGRAS:
+"REGRAS:
 - Sempre responda em português.
 - Responda APENAS dúvidas relacionadas a RH.
 
@@ -113,9 +133,9 @@ IDENTIFICAÇÃO DO FUNCIONÁRIO:
 - Se encontrado: use os saldos de férias e banco de horas.
 - Se não encontrado: não invente dados pessoais. Responda apenas com
   base nas políticas gerais de RH do Vector Store.
-- Use a base de conhecimento para dúvidas gerais.
-```
+- Use a base de conhecimento para dúvidas gerais."
 
+````
 Esse desenho garante que o agente **nunca alucina dados pessoais**: ele só responde com números reais quando encontra o colaborador no banco; caso contrário, recorre exclusivamente à base de conhecimento (RAG) para informações genéricas.
 
 ---
@@ -167,14 +187,14 @@ Esse exemplo evidencia o comportamento esperado: quando o nome completo bate com
 
 | Camada | Ferramenta |
 |---|---|
-| Orquestração / automação | n8n |
-| Modelo de linguagem | Cohere Chat Model / OpenAI |
-| Embeddings | Cohere Embeddings / OpenAI Embeddings |
+| Orquestração / automação | [n8n](https://n8n.io/) |
+| Modelo de linguagem | Cohere Chat Model / OpenAI (https://cohere.com)|
+| Embeddings | Cohere Embeddings / OpenAI Embeddings (https://cohere.com)|
 | Banco vetorial (RAG) | Simple Vector Store (n8n) |
-| Banco de dados relacional | MySQL |
-| Canal de comunicação | Telegram (Bot API + Webhook) |
-| Hospedagem | Railway |
-| Fonte de documentos | GitHub (Manual do Colaborador e Políticas de RH) |
+| Banco de dados relacional | MySQL (Railway)|
+| Canal de comunicação | Telegram [Bot API + Webhook](https://web.telegram.org) |
+| Hospedagem | [Railway](https://railway.com) |
+| Fonte de documentos | GitHub ([Manual do Colaborador e Políticas de RH](https://raw.githubusercontent.com/ericmonne/chocolatech-imersao/refs/heads/main/Manual%20de%20RH%20ChocolaTech.txt)) | [GitHub com os arquivos de CHOCOLATECH](https://github.com/ericmonne/chocolatech-imersao)
 
 ---
 
@@ -184,8 +204,6 @@ Esse exemplo evidencia o comportamento esperado: quando o nome completo bate com
 - ✅ Combinação de dados estruturados (SQL) e não estruturados (RAG) para respostas mais inteligentes
 - ✅ Identificação individual de colaboradores e memória de conversa isolada por sessão
 - ✅ Guardrails para manter o agente dentro do escopo de RH
-- ✅ Projeto completo para portfólio, com experiência prática em ferramentas de mercado
-
 ---
 
 ## 10. Possíveis melhorias futuras
@@ -198,5 +216,5 @@ Esse exemplo evidencia o comportamento esperado: quando o nome completo bate com
 
 ---
 
-*Projeto desenvolvido na ONE | Imersão Agentes de IA (Alura + Oracle Next Education).*
-*Instrutores: Eric Oliveira, Giovani Polonio Ticianelli e Guilherme Lima.*
+*Projeto desenvolvido durante a Imersão Agentes de IA (Alura + Oracle Next Education - Junho/2026).*
+*Instrutores: Eric Monné, Giovani Polonio Ticianelli e Guilherme Lima.*
